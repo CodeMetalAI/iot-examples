@@ -1,4 +1,6 @@
 
+<a href="https://codemetal.ai"> <img src="figs/CM_DARK_LOGO.png" style="background-color:white;" width="300"></a>
+
 # Introduction
 
 The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built by at Code Metal -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
