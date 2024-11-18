@@ -13,7 +13,7 @@
 
 The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built by at Code Metal -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
 
-This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for two ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C. 
+This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for two ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
 
 Happy hacking IoT apps!
 
@@ -202,3 +202,7 @@ python tools/micropy2c.py -o /tmp/heltec_wifi_lora heltec-wifi-lora-v3 examples/
 ```
 
 Similar to the output of transpiling single Python program, the output of batch transpilation will be a bunch of directories under `/tmp/heltec_wifi_lora`. You can follow steps mentioned above to compile them individually.
+
+# Disclaimer
+
+THIS REPOSITORY CONTAINS DEMONSTRATIVE MICROPYTHON, CIRCUITPYTHON, AND ARDUINO C PROGRAMS DEVELOPED OR COLLECTED FOR THE PURPOSE OF HACKATHONS. THEY DO NOT REPRESENT CODE METAL PLATFORMS OR PRODUCTS.
