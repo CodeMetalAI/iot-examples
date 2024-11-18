@@ -1,5 +1,9 @@
 
-<a href="https://codemetal.ai"> <img src="figs/CM_DARK_LOGO.png" style="background-color:white;" width="300"></a>
+<div align="center">
+  <a href="https://codemetal.ai">
+    <img src="figs/CM_DARK_LOGO.png" style="background-color:white;" width="300">
+  </a>
+</div>
 
 # Introduction
 
