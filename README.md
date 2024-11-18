@@ -11,9 +11,9 @@
 
 # Introduction
 
-The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built by at Code Metal -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
+The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built at Code Metal for the hackathon -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
 
-This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for two ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
+This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for two ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal hackathon IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
 
 Happy hacking IoT apps!
 
@@ -141,9 +141,9 @@ arduino-cli lib install "TFT_eSPI"
 | | [gps-test](examples/heltec-wireless-tracker-v1.1/arduino/GPSDisplayOnTFT/) | Heltec Wireless Tracker | Arduino | [Heltec_ESP32](https://github.com/HelTecAutomation/Heltec_ESP32) |
 
 
-# Using CodeMetal transpiler
+# Using CodeMetal Hackathon-transpiler
 
-We have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipeline in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
+For the purpose of the hackathon, we have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipelines in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
 
 ## Usage
 
