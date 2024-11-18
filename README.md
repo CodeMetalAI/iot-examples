@@ -1,8 +1,11 @@
 
 # Introduction
 
-This repository contains MicroPython and Arduino based applications for ESP32 based boards from Heltec Automation. 
-Specifically, we have evaluated these applications on following two boards:
+The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built by at Code Metal -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
+
+This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for two ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C. 
+
+Happy hacking IoT apps!
 
 ## (1) [Heltec Automation Wireless Tracker v1.1](https://resource.heltec.cn/download/Wireless_Tracker/Wireless_Tracker%20_1.1.pdf)
 
@@ -66,17 +69,35 @@ esptool.py --chip esp32s3 --port <port> erase_flash
 ```
 
 ```
-# To install downloaded firmware
+# To flash downloaded firmware
 esptool.py --chip esp32s3 --port <port> write_flash -z 0 <downloaded_file>
 ```
+- MicroPython or CircuitPython application may require particular libraries to be installed (mentioned in Applications below). These libraries can be installed by navigating to `Tools -> Manage plug-ins` in Thonny IDE.
 
 ## Base Arduino software
 
 - Install Arduino IDE from [here](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE).
-- For Heltec Wireless Tracker, select `Heltec Wireless Tracker` in Boards.
-- For Heltec Wifi LoRa V3, select `Heltec WiFi LoRa 32 (v3)` in Boards.
+- Install necessary Arduino libraries as below.
+
+```
+arduino-cli core update-index && \
+arduino-cli core install esp32:esp32 && \
+arduino-cli lib install "Heltec ESP32 Dev-Boards" && \
+arduino-cli lib install "Heltec_ESP32_LoRa_v3" && \
+arduino-cli lib install "Adafruit GFX Library" && \
+arduino-cli lib install "Adafruit SSD1306" && \
+arduino-cli lib install "ESP8266 and ESP32 OLED driver for SSD1306 displays" && \
+arduino-cli lib install "LiquidCrystal" && \
+arduino-cli lib install "LoRa" && \
+arduino-cli lib install "LoRaRF" && \
+arduino-cli lib install "TinyGPSPlus" && \
+arduino-cli lib install "TFT" && \
+arduino-cli lib install "TFT_eSPI"
+```
+- For Heltec Wireless Tracker, select `Heltec Wireless Tracker` in `tools/Board` or by clicking drop-down box near top-left corner of IDE.
+- For Heltec Wifi LoRa V3, select `Heltec WiFi LoRa 32 (v3)` in `tools/Board` or by clicking drop-down box near top-left corner of IDE.
 - After installation, select appropriate board and port as [here](https://support.arduino.cc/hc/en-us/articles/4406856349970-Select-board-and-port-in-Arduino-IDE).
-- Necessary Arduino libraries are listed with the applications below.
+
 
 ## Applications
 
@@ -112,7 +133,7 @@ esptool.py --chip esp32s3 --port <port> write_flash -z 0 <downloaded_file>
 
 # Using CodeMetal transpiler
 
-The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware,but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where transpilation software built by us at [CodeMetal](https://www.codemetal.ai/) steps in. We have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipeline in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
+We have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipeline in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
 
 ## Usage
 
