@@ -2,7 +2,7 @@
 <div align="center">
   <a href="https://codemetal.ai">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="figs/CM_LIGHT_LOGO.png">
+      <source media="(prefers-color-scheme: light)" srcset="figs/CM_LIGHT_LOGO.png">
       <source media="(prefers-color-scheme: light)" srcset="figs/CM_DARK_LOGO.png">
       <img src="figs/CM_LIGHT_LOGO.png">
     </picture>
