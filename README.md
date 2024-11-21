@@ -96,17 +96,38 @@ arduino-cli lib install "Heltec ESP32 Dev-Boards" && \
 arduino-cli lib install "Heltec_ESP32_LoRa_v3" && \
 arduino-cli lib install "Adafruit GFX Library" && \
 arduino-cli lib install "Adafruit SSD1306" && \
+arduino-cli lib install "Adafruit ST7735 and ST7789 Library" && \
+arduino-cli lib install "Adafruit Unified Sensor" && \
+arduino-cli lib install "Adafruit BME280 Library" && \
 arduino-cli lib install "ESP8266 and ESP32 OLED driver for SSD1306 displays" && \
 arduino-cli lib install "LiquidCrystal" && \
-arduino-cli lib install "LoRa" && \
 arduino-cli lib install "LoRaRF" && \
+arduino-cli lib install "EByte LoRa E22 library" && \
+arduino-cli lib install "EByte LoRa E220 library" && \
+arduino-cli lib install "EByte LoRa E32 library" && \
 arduino-cli lib install "TinyGPSPlus" && \
 arduino-cli lib install "TFT" && \
-arduino-cli lib install "TFT_eSPI"
+arduino-cli lib install "TFT_eSPI" && \
+arduino-cli lib install "ArduinoJson" && \
+arduino-cli lib install "PubSubClient" && \
+arduino-cli lib install "Crypto" && \
+arduino-cli lib install "Chrono" && \
+arduino-cli lib install "Base64"
 ```
+
+One of the LoRA libraries require a special treatment because of a symbol name conflict between a [popular LoRa library](https://github.com/sandeepmistry/arduino-LoRa/blob/master/src/LoRa.h) and [Heltec's LoRa APIs](https://github.com/HelTecAutomation/Heltec_ESP32/blob/master/src/lora/LoRa.h). Install this special library as:
+
+```
+arduino-cli config set library.enable_unsafe_install true && \
+arduino-cli lib install --git-url https://github.com/nhasabnic/arduino-LoRa && \
+arduino-cli config set library.enable_unsafe_install false
+```
+
 - For Heltec Wireless Tracker, select `Heltec Wireless Tracker` in `tools/Board` or by clicking drop-down box near top-left corner of IDE.
 - For Heltec Wifi LoRa V3, select `Heltec WiFi LoRa 32 (v3)` in `tools/Board` or by clicking drop-down box near top-left corner of IDE.
 - After installation, select appropriate board and port as [here](https://support.arduino.cc/hc/en-us/articles/4406856349970-Select-board-and-port-in-Arduino-IDE).
+
+
 
 
 ## Applications
