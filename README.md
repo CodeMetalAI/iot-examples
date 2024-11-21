@@ -17,6 +17,16 @@ This repository contains MicroPython, CircuitPython, and Arduino based applicati
 
 Happy hacking IoT apps!
 
+**Handy links to sections:**
+
+- [Tracker - board details](#1-heltec-automation-wireless-tracker-v11)
+- [Wifi-lora-V3 - board details](#2-heltec-automation-wifi-lora-v31)
+- [Installation](#software)
+- [Example Apps](#applications)
+- [Using Python to Arduino translator](#using-codemetal-hackathon-transpiler)
+
+**Hey, if you are beginner to IoT, ESP32 programming and have not heard these things before, don't worry! We have a [doc](doc/begineers_guide_to_running_lora_on_esp32.pdf) that captures step-by-step instructions to get LoRa-based Send/Recv working with these boards.**
+
 ## (1) [Heltec Automation Wireless Tracker v1.1](https://resource.heltec.cn/download/Wireless_Tracker/Wireless_Tracker%20_1.1.pdf)
 
 <img src="figs/WirelessTracker.jpg" width="250">
@@ -56,9 +66,9 @@ Additional Details:
 - [CircuitPython firmware for the board](https://circuitpython.org/board/heltec_esp32s3_wifi_lora_v3/)
 - [Arduino library from Heltec](https://github.com/HelTecAutomation/Heltec_ESP32)
 
-# Software and Applications
+# Software
 
-Below we list the applications, their language, and necessary library dependencies to get them working.
+Below we list the necessary Python and Arduino software for the boards mentioned above.
 
 ## Base Python software
 
@@ -130,7 +140,9 @@ arduino-cli config set library.enable_unsafe_install false
 
 
 
-## Applications
+# Applications
+
+Below we list the applications, their language, and necessary library dependencies to get them working.
 
 | Component  | File  |  Board | Language | Necessary software |
 | :---- | :---- | :---  | :---- | :--- |
@@ -186,12 +198,12 @@ options:
   -d, --source-dir SOURCE_DIR
                         Input is a directory containing Python source files
   -o, --output-dir OUTPUT_DIR
-                        Directory to store generated Arduino C files
-  -l, --source-lang {micropython,circuitpython}
-                        Language of Python program
-  -u, --host HOST       Translation API host
-  -p, --port PORT       Translation API port
-  -v, --verbose         Prints response details.
+                        Directory to store generated Arduino C files          [Default: /tmp/out]
+  -l {micropython,circuitpython}, --source-lang {micropython,circuitpython}
+                        Language of Python program                            [Default: micropython]
+  -u HOST, --host HOST  Translation API host                                  [Default: http://localhost]
+  -p PORT, --port PORT  Translation API port                                  [Default: 8080]
+  -v, --verbose         Prints response details.                              [Default: False]
 ```
 
 ## Sample examples
@@ -203,13 +215,20 @@ First, we specify the board that we want to obtain Arduino C code for. Then we s
 We also specify the CircuitPython program that we want to transpile. The transpilation request is sent to CodeMetal transpiler deployed at IP address `http://dummy.url` and port `8080`.
 
 ```
-python tools/micropy2c.py heltec-wifi-lora-v3 -o /tmp/heltec_wifi_lora_v3 -l circuitpython examples/heltec-wifi-lora-v3/python/display_hello_world.circuitpy.py -h http://dummy.url -p 8080
+python tools/micropy2c.py \
+-b heltec-wifi-lora-v3 \
+-o /tmp/heltec_wifi_lora_v3 \
+-l circuitpython \
+-s examples/heltec-wifi-lora-v3/python/display_hello_world.circuitpy.py \
+-u http://dummy.url -p 8080
 ```
 
 Directory `/tmp/heltec_wifi_lora_v3` should contain `display_hello_world.circuitpy/display_hello_world.circuitpy.ino` containing Arduino C code. This code can be compiled using following command:
 
 ```
-arduino-cli compile -b esp32:esp32:heltec_wifi_lora_v3 /tmp/heltec_wifi_lora_v3/display_hello_world.circuitpy
+arduino-cli compile \
+-b esp32:esp32:heltec_wifi_lora_v3 \
+/tmp/heltec_wifi_lora_v3/display_hello_world.circuitpy
 ```
 
 NOTE: You may see some compilation errors if necessary Arduino boards/libraries are not installed.
@@ -221,10 +240,22 @@ Only additional option that we provide is `-d` and the input then is `examples/h
 a directory containing Python programs.
 
 ```
-python tools/micropy2c.py -o /tmp/heltec_wifi_lora heltec-wifi-lora-v3 examples/heltec-wifi-lora-v3/python -d -h http://dummy.url -p 8080
+python tools/micropy2c.py \
+-o /tmp/heltec_wifi_lora \
+-b heltec-wifi-lora-v3 \
+-d examples/heltec-wifi-lora-v3/python \
+-u http://dummy.url -p 8080
 ```
 
 Similar to the output of transpiling single Python program, the output of batch transpilation will be a bunch of directories under `/tmp/heltec_wifi_lora`. You can follow steps mentioned above to compile them individually.
+
+# FAQs
+
+- What is this LoRa library called CMLoRa and why do we need it?
+
+There are two Arduino libraries for LoRa on ESP32: Heltec Automation's LoRa library (part of [Heltec_ESP32](https://github.com/HelTecAutomation/Heltec_ESP32)) and the popular [arduino-LoRa](https://github.com/sandeepmistry/arduino-LoRa) library. Heltec's library is pre-compiled and installed automatically when Heltec's Arduino board is installed. The other LoRa library can be installed also but that leads to a problem.
+
+Unfortunately, both the libraries use same header file (e.g., [LoRa.h](https://github.com/sandeepmistry/arduino-LoRa/blob/master/src/LoRa.h) and [LoRa.h](https://github.com/HelTecAutomation/Heltec_ESP32/blob/master/src/lora/LoRa.h)) and API names (which leads to a symbol name conflict) but their LoRa APIs differ (in terms of arguments). This prevents coexistance of both the libraries. With [CMLoRa](https://github.com/nhasabnic/arduino-LoRa) library, we have forked the popular `arduino-LoRa` library and modified its header file to prevent the symbol name conflict. And that allows us to install both `Heltec_ESP32` and `CMLoRa` libraries at the same time.
 
 # Disclaimer
 

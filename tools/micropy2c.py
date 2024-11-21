@@ -31,12 +31,18 @@ def translate_py_to_c(args: list, py_file: str) -> (str, str):
 
         if response.status_code == 200:
           # successful response
-          return response_json['output_code'], "compilation success" if response_json['metrics']['compilation_success'] else "compilation failure"
+          return response_json['output_code'], "success" if response_json['metrics']['compilation_success'] else "failure"
         else:
           print("Received error:" + response_json["error"]["message"])
           return None, None
     except requests.ConnectionError as e:
         print('ERROR: No one is listening to me! Did you provide a correct host/port?')
+        print('Use verbose option to get more details if you want.')
+        if args.verbose:
+            print('Request received exception:' + str(e))
+        return None, None
+    except requests.RequestException as e:
+        print('ERROR: Something is wrong with the request. Use https://<url> format.')
         print('Use verbose option to get more details if you want.')
         if args.verbose:
             print('Request received exception:' + str(e))
