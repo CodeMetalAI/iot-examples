@@ -35,9 +35,14 @@ def translate_py_to_c(args: list, py_file: str) -> (str, str):
         else:
           print("Received error:" + response_json["error"]["message"])
           return None, None
-    except Exception as e:
+    except requests.ConnectionError as e:
+        print('ERROR: No one is listening to me! Did you provide a correct host/port?')
+        print('Use verbose option to get more details if you want.')
         if args.verbose:
             print('Request received exception:' + str(e))
+        return None, None
+    except Exception as e:
+        print('Request received exception:' + str(e))
         return None, None
 
 
