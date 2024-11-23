@@ -3,6 +3,9 @@ import os
 import sys
 import glob
 import requests
+from requests.auth import HTTPBasicAuth
+
+TOOLS_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 # Python program to translate MicroPython/CircuitPython program to Arduino C
 # API for ESP32 boards from Heltec Automation. Requires a translation server
@@ -24,7 +27,9 @@ def translate_py_to_c(args: list, py_file: str) -> (str, str):
                                  json={"original_code": py_code,
                                        "original_lang": args.source_lang,
                                        "target_lang": "arduino-c",
-                                       "target_hardware": args.board})
+                                       "target_hardware": args.board},
+                                 auth=HTTPBasicAuth(args.user, args.passwd),
+                                 verify=os.path.join(TOOLS_DIR, '../doc/hackathon-certfile.pem'))
         if args.verbose:
             print(response.text)
         response_json = response.json()
@@ -33,17 +38,19 @@ def translate_py_to_c(args: list, py_file: str) -> (str, str):
           # successful response
           return response_json['output_code'], "success" if response_json['metrics']['compilation_success'] else "failure"
         else:
-          print("Received error:" + response_json["error"]["message"])
+          print("Received error during transpilation:" + response_json["error"]["message"])
           return None, None
     except requests.ConnectionError as e:
         print('ERROR: No one is listening to me! Did you provide a correct host/port?')
-        print('Use verbose option to get more details if you want.')
+        if not args.verbose:
+          print('Use verbose (-v) option to get more details if you want.')
         if args.verbose:
             print('Request received exception:' + str(e))
         return None, None
     except requests.RequestException as e:
-        print('ERROR: Something is wrong with the request. Use https://<url> format.')
-        print('Use verbose option to get more details if you want.')
+        print('ERROR: Something is wrong with the request.')
+        if not args.verbose:
+          print('Use verbose (-v) option to get more details if you want.')
         if args.verbose:
             print('Request received exception:' + str(e))
         return None, None
@@ -77,10 +84,14 @@ parser.add_argument('-l', '--source-lang',
                     help='Language of Python program',
                     choices=['micropython', 'circuitpython'],
                     default='micropython')
-parser.add_argument('-u', '--host', help='Translation API host',
-                    default='http://localhost')
-parser.add_argument('-p', '--port', help='Translation API port',
-                    type=int, default=8080)
+parser.add_argument('-m', '--host', help='Translation API host',
+                    default='https://localhost')
+parser.add_argument('-n', '--port', help='Translation API port',
+                    type=int, default=443)
+parser.add_argument('-u', '--user', help='Username for translation API',
+                    default='')
+parser.add_argument('-p', '--passwd', help='Password for translation API',
+                    default='')
 parser.add_argument('-v', '--verbose', help='Prints response details.',
                     action='store_true')
 args = parser.parse_args()
@@ -99,7 +110,7 @@ if args.source_file == '' and args.source_dir != '' and not os.path.isdir(args.s
     print(f'ERROR: {args.source_dir} is not a directory')
     sys.exit(1)
 if args.source_dir == '' and args.source_file != '' and not os.path.isfile(args.source_file):
-    print(f'ERROR: {args.source_file_or_dir} is not a file')
+    print(f'ERROR: {args.source_file} is not a file')
     sys.exit(1)
 
 # If output directory does not exist, create it.

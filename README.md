@@ -201,8 +201,10 @@ options:
                         Directory to store generated Arduino C files          [Default: /tmp/out]
   -l {micropython,circuitpython}, --source-lang {micropython,circuitpython}
                         Language of Python program                            [Default: micropython]
-  -u HOST, --host HOST  Translation API host                                  [Default: http://localhost]
-  -p PORT, --port PORT  Translation API port                                  [Default: 8080]
+  -m HOST, --host HOST  Translation API host                                  [Default: https://localhost]
+  -n PORT, --port PORT  Translation API port                                  [Default: 443]
+  -u USER, --user USER  Username for translation API
+  -p PASSWD, --passwd PASSWD Password for translation API
   -v, --verbose         Prints response details.                              [Default: False]
 ```
 
@@ -220,7 +222,7 @@ python tools/micropy2c.py \
 -o /tmp/heltec_wifi_lora_v3 \
 -l circuitpython \
 -s examples/heltec-wifi-lora-v3/python/display_hello_world.circuitpy.py \
--u http://dummy.url -p 8080
+-m http://dummy.url -n 8080
 ```
 
 Directory `/tmp/heltec_wifi_lora_v3` should contain `display_hello_world.circuitpy/display_hello_world.circuitpy.ino` containing Arduino C code. This code can be compiled using following command:
@@ -244,7 +246,7 @@ python tools/micropy2c.py \
 -o /tmp/heltec_wifi_lora \
 -b heltec-wifi-lora-v3 \
 -d examples/heltec-wifi-lora-v3/python \
--u http://dummy.url -p 8080
+-m http://dummy.url -n 8080
 ```
 
 Similar to the output of transpiling single Python program, the output of batch transpilation will be a bunch of directories under `/tmp/heltec_wifi_lora`. You can follow steps mentioned above to compile them individually.
