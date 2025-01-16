@@ -63,10 +63,10 @@ parser = argparse.ArgumentParser(
             prog='micropy2c',
             description='Translate MicroPython or CircuitPython program(s) '
                         'to Arduino C SDK for ESP32 boards from Heltec '
-                        'Automation.')
+                        'Automation and Raspberry Pi Pico boards.',)
 parser.add_argument('-b', '--board',
                     help='Heltec board for which to generate Arduino C code',
-                    choices=['heltec-wireless-tracker', 'heltec-wifi-lora-v3'],
+                    choices=['heltec-wireless-tracker', 'heltec-wifi-lora-v3', 'raspberrypi-pico'],
                     required=True)
 parser.add_argument('-s', '--source-file',
                     help='Path to Micro/Circuit Python program file',
