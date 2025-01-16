@@ -250,9 +250,9 @@ Below we provide some MicroPython based applications for Raspberry Pi Pico board
 | | [gps-test](examples/heltec-wireless-tracker-v1.1/arduino/GPSDisplayOnTFT/) | Heltec Wireless Tracker | Arduino | [Heltec_ESP32](https://github.com/HelTecAutomation/Heltec_ESP32) |
 
 
-# Using CodeMetal Hackathon-transpiler
+# Using CodeMetal transpiler
 
-For the purpose of the hackathon, we have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipelines in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
+For the purpose of the experiments, we have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipelines in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
 
 ## Usage
 
