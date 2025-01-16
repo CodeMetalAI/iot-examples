@@ -15,12 +15,11 @@ The key advantage of programming IoT applications in MicroPython or CircuitPytho
 
 This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for Raspberry Pi Pico from Raspberry Pi Foundation and ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal hackathon IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
 
-Happy hacking IoT apps!
-
 **Handy links to sections:**
 
-- [Tracker - board details](#1-heltec-automation-wireless-tracker-v11)
-- [Wifi-lora-V3 - board details](#2-heltec-automation-wifi-lora-v31)
+- [Raspberry Pi Pico details](#1-raspberry-pi-pico)
+- [Tracker - board details](#2-heltec-automation-wireless-tracker-v11)
+- [Wifi-lora-V3 - board details](#3-heltec-automation-wifi-lora-v31)
 - [Installation](#software)
 - [Example Apps](#applications)
 - [Using Python to Arduino translator](#using-codemetal-hackathon-transpiler)
@@ -204,6 +203,8 @@ arduino-cli config set library.enable_unsafe_install false
 Below we list the applications, their language, and necessary library dependencies to get them working.
 
 ## Apps for Raspberry Pi Pico
+
+Below we provide some MicroPython based applications for Raspberry Pi Pico board. We also list any necessary software libraries required for those applications.
 
 | Component  | File  |  Board | Language | Necessary software |
 | :---- | :---- | :---  | :---- | :--- |
