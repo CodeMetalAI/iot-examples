@@ -11,9 +11,9 @@
 
 # Introduction
 
-The key advantange of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built at Code Metal for the hackathon -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
+The key advantage of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built at Code Metal for the hackathon -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
 
-This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for two ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal hackathon IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
+This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for Raspberry Pi Pico from Raspberry Pi Foundation and ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal hackathon IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
 
 Happy hacking IoT apps!
 
@@ -25,9 +25,34 @@ Happy hacking IoT apps!
 - [Example Apps](#applications)
 - [Using Python to Arduino translator](#using-codemetal-hackathon-transpiler)
 
-**Hey, if you are beginner to IoT, ESP32 programming and have not heard these things before, don't worry! We have a [doc](doc/begineers_guide_to_running_lora_on_esp32.pdf) that captures step-by-step instructions to get LoRa-based Send/Recv working with these boards.**
+**Hey, if you are beginner to IoT, ESP32 programming and have not heard these things before, don't worry! We have a [doc](doc/begineers_guide_to_running_lora_on_esp32.pdf) that captures step-by-step instructions to get LoRa-based Send/Recv working with these boards. Additionally, Raspberry Pi [documentation](https://www.raspberrypi.com/documentation/microcontrollers/micropython.html) is quite useful.**
 
-## (1) [Heltec Automation Wireless Tracker v1.1](https://resource.heltec.cn/download/Wireless_Tracker/Wireless_Tracker%20_1.1.pdf)
+## (1) [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html)
+
+<img src="https://www.raspberrypi.com/documentation/microcontrollers/images/pico-2.png?hash=c4b2ccf2504c98fdd111405dd95346b5" width="390">
+
+Raspberry Pi Pico is a low-cost, high-performance microcontroller board with flexible digital interfaces.
+
+The Raspberry Pi Pico family, referred to as Pico or Pico 1, comes in 4 variants: Pico, Pico H, Pico W, Pico WH. While the second-generation Raspberry Pi Pico family, referred to as Pico 2, comes in the following variants: Pico 2 and Pico 2 W. `W` stands for Pico containing 2.4GHz wireless interfaces (802.11n) using the Infineon CYW43439. While `H` stands for Pico with pre-soldered headers.
+
+Overall, some of the key features of Pico family of microcontrollers include:
+- [RP2040](https://www.raspberrypi.com/documentation/microcontrollers/silicon.html#rp2040) or similar microcontroller chip designed by Raspberry Pi in the United Kingdom
+- Dual-core Arm Cortex M0+ processor, flexible clock running up to 133 MHz (Pico 1)
+- on-board memory, USB support, low-power modes, GPIO pins, clock and timer on-chip,
+- temperature sensor
+
+Additional Details:
+
+- [Raspberry Pi MicroPython quick reference](https://docs.micropython.org/en/latest/rp2/quickref.html)
+- [Pico 1 Pin diagram](https://www.raspberrypi.com/documentation/microcontrollers/images/pico-pinout.svg)
+- [Pico 2 Pin diagram](https://www.raspberrypi.com/documentation/microcontrollers/images/pico-2-r4-pinout.svg)
+- [Pico 1 Datasheet](https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf), [Pico 1 W Datasheet](https://datasheets.raspberrypi.com/picow/pico-w-datasheet.pdf) 
+- [Pico 2 Datasheet](https://datasheets.raspberrypi.com/pico/pico-2-datasheet.pdf), [Pico 2 W Datasheet](https://datasheets.raspberrypi.com/picow/pico-2-w-datasheet.pdf)
+- [MicroPython SDK](https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-python-sdk.pdf), [C/C++ SDK](https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-c-sdk.pdf)
+- [Arduino library from Heltec](https://github.com/HelTecAutomation/Heltec_ESP32)
+- [Resetting flash](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html#resetting-flash-memory)
+
+## (2) [Heltec Automation Wireless Tracker v1.1](https://resource.heltec.cn/download/Wireless_Tracker/Wireless_Tracker%20_1.1.pdf)
 
 <img src="figs/WirelessTracker.jpg" width="250">
 
@@ -45,7 +70,7 @@ Additional Details:
 - [MicroPython firmware for ESP32](https://micropython.org/download/ESP32_GENERIC_S3/)
 - [Arduino library from Heltec](https://github.com/HelTecAutomation/Heltec_ESP32)
 
-## (2) [Heltec Automation Wifi LoRa v3.1](https://heltec.org/project/wifi-lora-32-v3/)
+## (3) [Heltec Automation Wifi LoRa v3.1](https://heltec.org/project/wifi-lora-32-v3/)
 
 <img src="figs/wifi_lora_v3.jpg" width="250">
 
@@ -73,10 +98,13 @@ Below we list the necessary Python and Arduino software for the boards mentioned
 ## Base Python software
 
 - A good IDE for writing MicroPython or CircuitPython programs is [Thonny](https://thonny.org/).
+- Raspberry Pi Pico supports MicroPython. Its firmware can be found [here](https://micropython.org/download/RPI_PICO/).
 - Heltec Wireless Tracker supports MicroPython only. Its firmware can be found [here](https://micropython.org/download/ESP32_GENERIC_S3/).
 - Heltec Wifi LoRa V3 board supports both MicroPython (shared above) and CircuitPython that can be found [here](https://circuitpython.org/board/heltec_esp32s3_wifi_lora_v3/).
 
-Firmware can be flashed on the board using `esptool.py` as:
+Firmware for Raspberry Pi Pico can be installed via UF2 bootloader by holding down the BOOTSEL button while plugging the board into USB. The UF2 file should then be copied to the USB mass storage device that appears.
+
+Firmware for Heltec boards can be flashed on the board using `esptool.py` as:
 
 ```
 pip install esptool.py
@@ -94,10 +122,43 @@ esptool.py --chip esp32s3 --port <port> write_flash -z 0 <downloaded_file>
 ```
 - MicroPython or CircuitPython application may require particular libraries to be installed (mentioned in Applications below). These libraries can be installed by navigating to `Tools -> Manage plug-ins` in Thonny IDE.
 
-## Base Arduino software
+## Arduino software
 
-- Install Arduino IDE from [here](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE).
-- Install necessary Arduino libraries as below.
+Install Arduino IDE from [here](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE).
+
+### Installing specific Arduino libraries for Raspberry Pi Pico
+
+These libraries cover various sensors that are typically used with Raspberry Pi Pico. Feel free to skip libraries for sensors that you may not be using.
+
+```
+arduino-cli core update-index && \
+arduino-cli core install \
+        --additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json \
+        RP2040:rp2040 && \
+arduino-cli lib install "Adafruit NeoPixel" && \
+arduino-cli lib install "HCSR04" && \
+arduino-cli lib install "MFRC522" && \
+arduino-cli lib install "Adafruit MPR121" && \
+arduino-cli lib install "Adafruit MPU6050" && \
+arduino-cli lib install "DHT sensor library" && \
+arduino-cli lib install "IRremote" && \
+arduino-cli lib install "Servo" && \
+arduino-cli lib install "Adafruit ImageReader Library" && \
+arduino-cli lib install "Adafruit SH110X" && \
+arduino-cli lib install "ArduinoBLE" && \
+arduino-cli lib install "RotaryEncoder" && \
+arduino-cli config set library.enable_unsafe_install true && \
+arduino-cli lib install --git-url https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library.git && \
+arduino-cli lib install --git-url https://github.com/jarzebski/Arduino-MPU6050/ && \
+arduino-cli lib install --git-url https://github.com/wonho-maker/Adafruit_SH1106.git && \
+arduino-cli config set library.enable_unsafe_install false
+```
+
+After installation, select `Raspberry Pi Pico` in `tools/Board` or by clicking drop-down box near top-left corner of IDE. After installation, select appropriate board and port as [here](https://support.arduino.cc/hc/en-us/articles/4406856349970-Select-board-and-port-in-Arduino-IDE).
+
+### Installing specific Arduino libraries for Heltec boards
+
+Install necessary Arduino libraries Heltec boards as below.
 
 ```
 arduino-cli core update-index && \
@@ -138,11 +199,25 @@ arduino-cli config set library.enable_unsafe_install false
 - After installation, select appropriate board and port as [here](https://support.arduino.cc/hc/en-us/articles/4406856349970-Select-board-and-port-in-Arduino-IDE).
 
 
-
-
 # Applications
 
 Below we list the applications, their language, and necessary library dependencies to get them working.
+
+## Apps for Raspberry Pi Pico
+
+| Component  | File  |  Board | Language | Necessary software |
+| :---- | :---- | :---  | :---- | :--- |
+| **Display** | [lcd_hello_world.py](examples/raspberrypi-pico/python/lcd_hello_world.py) | RaspberryPi Pico | MicroPython | [`pico_i2c_lcd`](examples/raspberrypi-pico/python/pico_i2c_lcd.py) |
+| | [lcd_api.py](examples/raspberrypi-pico/python/lcd_api.py) | RaspberryPi Pico | MicroPython | Standard MicroPython |
+| **LEDs** | [led_blink.py](examples/raspberrypi-pico/python/led_blink.py) | RaspberryPi Pico | MicroPython | Standard MicroPython |
+| | [external_led_blink.py](examples/raspberrypi-pico/python/external_led_blink.py) | RaspberryPi Pico | MicroPython | Standard MicroPython |
+| **RGB color strip**| [rgb_color_strip_patterns.py](examples/raspberrypi-pico/python/rgb_color_strip_patterns.py) | RaspberryPi Pico | MicroPython | [`adafruit_circuitpython_neopixel`](https://github.com/adafruit/Adafruit_CircuitPython_NeoPixel)|
+| **Motion sensor**| [motion_sensor.py](examples/raspberrypi-pico/python/motion_sensor.py) | RaspberryPi Pico | MicroPython | Standard MicroPython |
+| | [passive_ir_sensor.py](examples/raspberrypi-pico/python/passive_ir_sensor.py) | RaspberryPi Pico | MicroPython | Standard MicroPython |
+| | [security_sys.py](examples/raspberrypi-pico/python/security_sys.py) | RaspberryPi Pico | MicroPython | Standard MicroPython |
+| **Ultrasonic sensor**| [lcd_ultrasonic.py](examples/raspberrypi-pico/python/lcd_ultrasonic.py) | RaspberryPi Pico | MicroPython | [`picozero`](https://picozero.readthedocs.io/en/latest/), [`pico_i2c_lcd`](examples/raspberrypi-pico/python/pico_i2c_lcd.py) |
+
+## Apps for Heltec boards
 
 | Component  | File  |  Board | Language | Necessary software |
 | :---- | :---- | :---  | :---- | :--- |
@@ -182,16 +257,16 @@ For the purpose of the hackathon, we have deployed our MicroPython to Arduino C 
 
 ```
 $ python tools/micropy2c.py -h
-usage: micropy2c [-h] [-b {heltec-wireless-tracker,heltec-wifi-lora-v3}]
+usage: micropy2c [-h] [-b {heltec-wireless-tracker,heltec-wifi-lora-v3,raspberrypi-pico}]
                  [-s SOURCE_FILE] [-d SOURCE_DIR] [-o OUTPUT_DIR]
-                 [-l {micropython,circuitpython}] [-u HOST] [-p PORT] [-v]
+                 [-l {micropython,circuitpython}] [-m HOST] [-n PORT]
+                 [-u USER] [-p PASSWD] [-v]
 
-Translate MicroPython or CircuitPython program(s) to Arduino C SDK for ESP32 boards
-from Heltec Automation.
+Translate MicroPython or CircuitPython program(s) to to Arduino C SDK for ESP32 boards from Heltec Automation and Raspberry Pi Pico boards.
 
 options:
   -h, --help            show this help message and exit
-  -b, --board {heltec-wireless-tracker,heltec-wifi-lora-v3}
+  -b, --board {heltec-wireless-tracker,heltec-wifi-lora-v3,raspberrypi-pico}
                         Heltec board for which to generate Arduino C code
   -s, --source-file SOURCE_FILE
                         Path to Micro/Circuit Python program file
@@ -199,7 +274,7 @@ options:
                         Input is a directory containing Python source files
   -o, --output-dir OUTPUT_DIR
                         Directory to store generated Arduino C files          [Default: /tmp/out]
-  -l {micropython,circuitpython}, --source-lang {micropython,circuitpython}
+  -l, --source-lang {micropython,circuitpython}
                         Language of Python program                            [Default: micropython]
   -m HOST, --host HOST  Translation API host                                  [Default: https://localhost]
   -n PORT, --port PORT  Translation API port                                  [Default: 443]
@@ -233,23 +308,25 @@ arduino-cli compile \
 /tmp/heltec_wifi_lora_v3/display_hello_world.circuitpy
 ```
 
+For Raspberry Pi Pico, use appropriate board name out of: `rp2040:rp2040:rpipico`, `rp2040:rp2040:rpipicow`, `rp2040:rp2040:rpipico2`, `rp2040:rp2040:rpipico2w` with `arduino-cli`.
+
 NOTE: You may see some compilation errors if necessary Arduino boards/libraries are not installed.
 
 ### Batch transpilation of Python programs
 
 Below we demonstrate how to transpile all Python programs from a directory into corresponding Arduino C programs.
-Only additional option that we provide is `-d` and the input then is `examples/heltec-wifi-lora-v3/python`, which is
+Only additional option that we provide is `-d` and the input then is `examples/raspberrypi-pico/python`, which is
 a directory containing Python programs.
 
 ```
 python tools/micropy2c.py \
--o /tmp/heltec_wifi_lora \
--b heltec-wifi-lora-v3 \
--d examples/heltec-wifi-lora-v3/python \
+-o /tmp/raspberrypi_pico \
+-b raspberrypi-pico \
+-d examples/raspberrypi-pico/python \
 -m http://dummy.url -n 8080
 ```
 
-Similar to the output of transpiling single Python program, the output of batch transpilation will be a bunch of directories under `/tmp/heltec_wifi_lora`. You can follow steps mentioned above to compile them individually.
+Similar to the output of transpiling single Python program, the output of batch transpilation will be a bunch of directories under `/tmp/raspberrypi_pico`. You can follow steps mentioned above to compile them individually.
 
 # FAQs
 
