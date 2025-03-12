@@ -11,9 +11,7 @@
 
 # Introduction
 
-The key advantage of programming IoT applications in MicroPython or CircuitPython is quick prototyping, but the performance of those Python applications on the IoT hardware is typically slow. Same applications programmed in Arduino C are typically much faster on the IoT hardware, but programming in Arduino C (with details such as pointers, etc.) is cumbersome. This is where the [CodeMetal](https://www.codemetal.ai/) IoT pipeline -- the transpilation software built at Code Metal for the hackathon -- steps in. The pipeline allows you to quickly develop IoT applications in Python while automatically translating them to Arduino C for optimized deployment on IoT hardware.
-
-This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for Raspberry Pi Pico from Raspberry Pi Foundation and ESP32 based boards from Heltec Automation. In addition, this repository also contains instructions to connect with the Code Metal hackathon IoT pipeline and leverage it from quick prototyping in Python to optimized deployment via Arduino C.
+This repository contains MicroPython, CircuitPython, and Arduino based applications and any necessary software for Raspberry Pi Pico from Raspberry Pi Foundation and ESP32 based boards from Heltec Automation.
 
 **Handy links to sections:**
 
@@ -22,7 +20,6 @@ This repository contains MicroPython, CircuitPython, and Arduino based applicati
 - [Wifi-lora-V3 - board details](#3-heltec-automation-wifi-lora-v31)
 - [Installation](#software)
 - [Example Apps](#applications)
-- [Using Python to Arduino translator](#using-codemetal-hackathon-transpiler)
 
 **Hey, if you are beginner to IoT, ESP32 programming and have not heard these things before, don't worry! We have a [doc](doc/begineers_guide_to_running_lora_on_esp32.pdf) that captures step-by-step instructions to get LoRa-based Send/Recv working with these boards. Additionally, Raspberry Pi [documentation](https://www.raspberrypi.com/documentation/microcontrollers/micropython.html) is quite useful.**
 
@@ -248,94 +245,6 @@ Below we provide some MicroPython based applications for Raspberry Pi Pico board
 | **GPS** | [gps-basic](examples/heltec-wireless-tracker-v1.1/python/gps_basic.micropy.py) | Heltec Wireless Tracker | MicroPython | Standard MicroPython Build |
 | | [gps-message-parser](examples/heltec-wireless-tracker-v1.1/python/gps_parser.micropy.py) | Heltec Wireless Tracker | MicroPython | Copy [micropyGPS.py](https://github.com/inmcm/micropyGPS) onto device |
 | | [gps-test](examples/heltec-wireless-tracker-v1.1/arduino/GPSDisplayOnTFT/) | Heltec Wireless Tracker | Arduino | [Heltec_ESP32](https://github.com/HelTecAutomation/Heltec_ESP32) |
-
-
-# Using CodeMetal transpiler
-
-For the purpose of the experiments, we have deployed our MicroPython to Arduino C SDK and CircuitPython to Arduino C SDK pipelines in cloud. To connect with these pipelines, we have developed a command line based tool that feeds MicroPython or CircuitPython code to the pipeline and fetches corresponding Arduino C code for them. Below we show sample usage of this tool named [`micropy2c.py`](tools/micropy2c.py).
-
-## Usage
-
-```
-$ python tools/micropy2c.py -h
-usage: micropy2c [-h] [-b {heltec-wireless-tracker,heltec-wifi-lora-v3,raspberrypi-pico}]
-                 [-s SOURCE_FILE] [-d SOURCE_DIR] [-o OUTPUT_DIR]
-                 [-l {micropython,circuitpython}] [-m HOST] [-n PORT]
-                 [-u USER] [-p PASSWD] [-v]
-
-Translate MicroPython or CircuitPython program(s) to to Arduino C SDK for ESP32 boards from Heltec Automation and Raspberry Pi Pico boards.
-
-options:
-  -h, --help            show this help message and exit
-  -b, --board {heltec-wireless-tracker,heltec-wifi-lora-v3,raspberrypi-pico}
-                        Heltec board for which to generate Arduino C code
-  -s, --source-file SOURCE_FILE
-                        Path to Micro/Circuit Python program file
-  -d, --source-dir SOURCE_DIR
-                        Input is a directory containing Python source files
-  -o, --output-dir OUTPUT_DIR
-                        Directory to store generated Arduino C files          [Default: /tmp/out]
-  -l, --source-lang {micropython,circuitpython}
-                        Language of Python program                            [Default: micropython]
-  -m HOST, --host HOST  Translation API host                                  [Default: https://localhost]
-  -n PORT, --port PORT  Translation API port                                  [Default: 443]
-  -u USER, --user USER  Username for translation API
-  -p PASSWD, --passwd PASSWD Password for translation API
-  -v, --verbose         Prints response details.                              [Default: False]
-```
-
-## Sample examples
-
-### Transpiling single Python program
-
-Below we demonstrate how to transpile single CircuitPython program into Arduino C programs.
-First, we specify the board that we want to obtain Arduino C code for. Then we specify an output directory to store generated C code.
-We also specify the CircuitPython program that we want to transpile. The transpilation request is sent to CodeMetal transpiler deployed at IP address `http://dummy.url` and port `8080`.
-
-```
-python tools/micropy2c.py \
--b heltec-wifi-lora-v3 \
--o /tmp/heltec_wifi_lora_v3 \
--l circuitpython \
--s examples/heltec-wifi-lora-v3/python/display_hello_world.circuitpy.py \
--m http://dummy.url -n 8080
-```
-
-Directory `/tmp/heltec_wifi_lora_v3` should contain `display_hello_world.circuitpy/display_hello_world.circuitpy.ino` containing Arduino C code. This code can be compiled using following command:
-
-```
-arduino-cli compile \
--b esp32:esp32:heltec_wifi_lora_v3 \
-/tmp/heltec_wifi_lora_v3/display_hello_world.circuitpy
-```
-
-For Raspberry Pi Pico, use appropriate board name out of: `rp2040:rp2040:rpipico`, `rp2040:rp2040:rpipicow`, `rp2040:rp2040:rpipico2`, `rp2040:rp2040:rpipico2w` with `arduino-cli`.
-
-NOTE: You may see some compilation errors if necessary Arduino boards/libraries are not installed.
-
-### Batch transpilation of Python programs
-
-Below we demonstrate how to transpile all Python programs from a directory into corresponding Arduino C programs.
-Only additional option that we provide is `-d` and the input then is `examples/raspberrypi-pico/python`, which is
-a directory containing Python programs.
-
-```
-python tools/micropy2c.py \
--o /tmp/raspberrypi_pico \
--b raspberrypi-pico \
--d examples/raspberrypi-pico/python \
--m http://dummy.url -n 8080
-```
-
-Similar to the output of transpiling single Python program, the output of batch transpilation will be a bunch of directories under `/tmp/raspberrypi_pico`. You can follow steps mentioned above to compile them individually.
-
-# FAQs
-
-- What is this LoRa library called CMLoRa and why do we need it?
-
-There are two Arduino libraries for LoRa on ESP32: Heltec Automation's LoRa library (part of [Heltec_ESP32](https://github.com/HelTecAutomation/Heltec_ESP32)) and the popular [arduino-LoRa](https://github.com/sandeepmistry/arduino-LoRa) library. Heltec's library is pre-compiled and installed automatically when Heltec's Arduino board is installed. The other LoRa library can be installed also but that leads to a problem.
-
-Unfortunately, both the libraries use same header file (e.g., [LoRa.h](https://github.com/sandeepmistry/arduino-LoRa/blob/master/src/LoRa.h) and [LoRa.h](https://github.com/HelTecAutomation/Heltec_ESP32/blob/master/src/lora/LoRa.h)) and API names (which leads to a symbol name conflict) but their LoRa APIs differ (in terms of arguments). This prevents coexistance of both the libraries. With [CMLoRa](https://github.com/nhasabnic/arduino-LoRa) library, we have forked the popular `arduino-LoRa` library and modified its header file to prevent the symbol name conflict. And that allows us to install both `Heltec_ESP32` and `CMLoRa` libraries at the same time.
 
 # Disclaimer
 
